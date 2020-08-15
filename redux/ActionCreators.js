@@ -79,12 +79,14 @@ export const addComment = comment => ({
 
 export const postComment = (campsiteId, rating, author, text) => dispatch => {
     const newComment = {
-        campsiteId: campsiteId,
-        rating: rating,
-        author: author,
-        text: text
+        campsiteId,
+        rating,
+        author,
+        text
     };
     newComment.date = new Date().toISOString();
+    console.log('newComment', newComment)
+ 
 
     return fetch(baseUrl + 'comments', {
         method: "POST",
