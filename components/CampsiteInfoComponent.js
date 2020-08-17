@@ -146,7 +146,7 @@ class CampsiteInfo extends Component {
                     <View style={styles.modal}>
                         <Rating
                             showRating
-                            startingValue={this.rating}
+                            startingValue={this.state.rating}
                             imageSize={40}
                             onFinishRating={(rating) => this.setState({ rating: rating })}
                             style={{ paddingVertical: 10 }}
