@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, FlatList } from 'react-native';
+import { Text, View, ScrollView, FlatList, Modal, Button, StyleSheet } from 'react-native';
 import { Card, Icon, Rating, Input } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
 import { postFavorite, postComment } from '../redux/ActionCreators';
-import { Modal, Button, StyleSheet } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 
 const mapStateToProps = state => {
     return {
@@ -25,32 +25,34 @@ function RenderCampsite(props) {
 
     if (campsite) {
         return (
-            <Card
-                featuredTitle={campsite.name}
-                image={{ uri: baseUrl + campsite.image }}>
-                <Text style={{ margin: 10 }}>
-                    {campsite.description}
-                </Text>
-                <View style={styles.cardRow}>
-                    <Icon
-                        name={props.favorite ? 'heart' : 'heart-o'}
-                        type='font-awesome'
-                        color='#f50'
-                        raised
-                        reverse
-                        onPress={() => props.favorite ? console.log('Already set as a favorite') : props.markFavorite()}
-                    />
-                    <Icon
-                        name='pencil'
-                        type='font-awesome'
-                        color='#5637DD'
-                        raised
-                        reverse
-                        onPress={() => props.onShowModal()}
-                        style={styles.cardItem}
-                    />
-                </View>
-            </Card>
+            <Animatable.View animation='fadeInDown' duration={2000} delay={1000}>
+                <Card
+                    featuredTitle={campsite.name}
+                    image={{ uri: baseUrl + campsite.image }}>
+                    <Text style={{ margin: 10 }}>
+                        {campsite.description}
+                    </Text>
+                    <View style={styles.cardRow}>
+                        <Icon
+                            name={props.favorite ? 'heart' : 'heart-o'}
+                            type='font-awesome'
+                            color='#f50'
+                            raised
+                            reverse
+                            onPress={() => props.favorite ? console.log('Already set as a favorite') : props.markFavorite()}
+                        />
+                        <Icon
+                            name='pencil'
+                            type='font-awesome'
+                            color='#5637DD'
+                            raised
+                            reverse
+                            onPress={() => props.onShowModal()}
+                            style={styles.cardItem}
+                        />
+                    </View>
+                </Card>
+            </Animatable.View>
         );
     }
     return <View />;
@@ -62,7 +64,7 @@ function RenderComments({ comments }) {
         return (
             <View style={{ margin: 10 }}>
                 <Text style={{ fontSize: 14 }}>{item.text}</Text>
-                <Rating 
+                <Rating
                     readonly
                     imageSize={10}
                     startingValue={item.rating}
@@ -70,21 +72,23 @@ function RenderComments({ comments }) {
                         fontSize: 12,
                         alignItems: 'flex-start',
                         paddingVertical: '5%'
-                    }} 
-                    />
+                    }}
+                />
                 <Text style={{ fontSize: 12 }}>{`-- ${item.author}, ${item.date}`}</Text>
             </View>
         );
     }
 
     return (
-        <Card title='Comments'>
-            <FlatList
-                data={comments}
-                renderItem={renderCommentItem}
-                keyExtractor={item => item.id.toString()}
-            />
-        </Card>
+        <Animatable.View animation='fadeInUp' duration={2000} delay={1000}>
+            <Card title='Comments'>
+                <FlatList
+                    data={comments}
+                    renderItem={renderCommentItem}
+                    keyExtractor={item => item.id.toString()}
+                />
+            </Card>
+        </Animatable.View>
     )
 }
 
@@ -154,13 +158,13 @@ class CampsiteInfo extends Component {
                         <Input
                             placeholder='Author'
                             leftIcon={{ type: 'font-awesome', name: 'user-o' }}
-                            leftIconContainerStyle={{paddingRight: 10}}
+                            leftIconContainerStyle={{ paddingRight: 10 }}
                             onChangeText={(author) => this.setState({ author })}
                         />
                         <Input
                             placeholder='Comment'
                             leftIcon={{ type: 'font-awesome', name: 'comment-o' }}
-                            leftIconContainerStyle={{paddingRight: 10}}
+                            leftIconContainerStyle={{ paddingRight: 10 }}
                             onChangeText={(comment) => this.setState({ text: comment })}
                         />
                         <View>
@@ -175,7 +179,7 @@ class CampsiteInfo extends Component {
                         </View>
                         <View style={{ margin: 10 }}>
                             <Button
-                                onPress={() => { 
+                                onPress={() => {
                                     this.toggleModal();
                                     this.resetForm();
                                 }}
